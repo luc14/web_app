@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+
+<head>
+</head>
+
+<body>
+    
+        <h3>graph-0</h3>
+        <div id="graph-0"></div>
+    
+
+</body>
+
+
+<footer>
+    <!-- D3.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!-- Plotly.js -->
+    <script src="https://d14fo0winaifog.cloudfront.net/plotly-basic.js"></script>
+
+    <script type="text/javascript">
+
+        var graphs = [{"data": [{"x": {{x|safe}}, "y": {{y}}, "type": "scatter"}], "layout": {"title": "{{name}}"}}];
+        var ids = ['graph-0'];
+
+        for(var i in graphs) {
+            Plotly.plot(ids[i], // the ID of the div, created above
+                        graphs[i].data,
+                        graphs[i].layout || {});
+        }
+
+    </script>
+</footer>
+
+</html>
