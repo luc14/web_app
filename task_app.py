@@ -8,7 +8,16 @@ class Tasks:
         '''
         '''
         self.tasks = {}
-
+        
+    def get_all_tasks(self,):
+        tasks = []
+        for task_id, task in self.tasks.items():
+            tasks.append(task)
+        return tasks
+    
+    def get_task_number(self):
+        return len(self.tasks)
+        
     def get_task(self, task_id):
         '''return None if task_id is not in tasks; oterwise return the corresponding task
         '''
@@ -33,7 +42,7 @@ app = Flask(__name__)
 
 @app.route('/todo/api/v1.0/tasks', methods=['GET'])
 def get_all_tasks():
-    return jsonify({'tasks': t.tasks})
+    return jsonify({'tasks': t.get_all_tasks()})
 
 @app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['GET'])
 def get_task(task_id):
@@ -50,12 +59,8 @@ def not_found(error):
 def create_task():
     if not request.json or not 'title' in request.json: 
         return request.json    
-    if len(t.tasks) > 0:
-        new_id = max(t.tasks.keys()) + 1
-    else:
-        new_id = 1
     new_task = {
-        'id': new_id,
+        'id': t.get_task_number()+1,
         'title': request.json['title'],
         'description': request.json.get('description', ""),
     }
@@ -68,7 +73,14 @@ def delete_task(task_id):
     if task is None:
         abort(404)
     return jsonify({'result': True})
-   
+
+@app.route('/todo/api/v1.0/tasks', methods=['DELETE'])
+def clear_tasks():
+    task_num = t.get_task_number()
+    while task_num>0:
+        t.delete_task(task_num)
+        task_num = t.get_task_number()
+    return jsonify({'result': True})
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True, host= '0.0.0.0') 
