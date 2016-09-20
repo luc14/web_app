@@ -14,9 +14,6 @@ class Tasks:
         for task_id, task in self.tasks.items():
             tasks.append(task)
         return tasks
-    
-    def get_task_number(self):
-        return len(self.tasks)
         
     def get_task(self, task_id):
         '''return None if task_id is not in tasks; oterwise return the corresponding task
@@ -25,12 +22,13 @@ class Tasks:
         
         
     def add_task(self, new_task):
-        ''' add new_task to tasks 
+        ''' 
+        add new_task to tasks 
         new_task is a dict, and the key is id 
         '''
-        if new_task['id'] not in self.tasks:
-            self.tasks[new_task['id']] = new_task
-        
+        new_task['id'] =len(self.tasks) + 1
+        self.tasks[new_task['id']] = new_task
+        return new_task
     
     def delete_task(self, task_id):
         '''return None if task_id is not in tasks; otherwise return the corresponding task, and delete it from tasks
@@ -59,12 +57,7 @@ def not_found(error):
 def create_task():
     if not request.json or not 'title' in request.json: 
         return request.json    
-    new_task = {
-        'id': t.get_task_number()+1,
-        'title': request.json['title'],
-        'description': request.json.get('description', ""),
-    }
-    t.add_task(new_task)
+    new_task = t.add_task(request.json)
     return jsonify({'task': new_task}), 201
 
 @app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['DELETE'])
