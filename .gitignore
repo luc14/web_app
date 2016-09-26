@@ -1,0 +1,5 @@
+.cache/
+*.pdf
+*.ipynb
+flask_learning.py
+web_app.py
