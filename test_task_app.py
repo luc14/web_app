@@ -3,7 +3,12 @@ from flask import request
 from task_app import app
 
 def test_task_app():
-    url = 'http://localhost:5000/todo/api/v1.0/tasks'
+    #domain = 'http://luc14.pythonanywhere.com'
+    domain = 'http://localhost:5000'
+    url = domain + '/todo/api/v1.0/tasks'
+    r = requests.delete(url)
+    assert r.json()['result'] == True
+    assert r.status_code == 200
     test_tasks = [
         {'description': 'haha', 'id': 1, 'title': 'Lu'},
         {'description': 'latte', 'id': 2, 'title': 'Coffee'}   
